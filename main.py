@@ -6,6 +6,26 @@ from matplotlib import pyplot as plt
 
 list_functions = []
 
+def peres():
+    res = []
+    for i in range(len(list_functions[lbox.curselection()[0]])):
+        min = list_functions[lbox.curselection()[0]][i]
+        if list_functions[lbox.curselection()[1]][i] < min:
+            min = list_functions[lbox.curselection()[1]][i]
+        res.append(min)
+    list_functions.append(res)
+    listbox_update()
+
+def obed():
+    res = []
+    for i in range(len(list_functions[lbox.curselection()[0]])):
+        max = list_functions[lbox.curselection()[0]][i]
+        if list_functions[lbox.curselection()[1]][i] > max:
+            max = list_functions[lbox.curselection()[1]][i]
+        res.append(max)
+    list_functions.append(res)
+    listbox_update()
+
 
 def count_function(x, a, b, c, d, isTrapezoid):
     result = []
@@ -36,7 +56,8 @@ def count_function(x, a, b, c, d, isTrapezoid):
 
     return result
 
-#поля для ввода значений
+
+# поля для ввода значений
 def clicked():
     x = np.arange(100)
 
@@ -54,6 +75,7 @@ def show():
         plt.plot(i)
     plt.show()
 
+
 def change():
     list_functions.pop(lbox.curselection()[0])
 
@@ -67,18 +89,22 @@ def change():
     list_functions.append(count_function(x, a, b, c, d, CheckVar1.get()))
     listbox_update()
 
+
 def del_function():
     list_functions.pop(lbox.curselection()[0])
     listbox_update()
+
 
 def listbox_update():
     lbox.delete(0, tkinter.END)
     for i in range(len(list_functions)):
         lbox.insert(i, str(i))
-#объединение графиков пересечение графиков чтобы пользователь сам выбирал, редактировать
-window = Tk()#окно
+
+
+# объединение графиков пересечение графиков чтобы пользователь сам выбирал, редактировать
+window = Tk()  # окно
 window.title("Оценка объемов продаж")
-window.geometry('400x250')#размер окна
+window.geometry('400x250')  # размер окна
 
 # function 1
 lbl_fn1 = Label(window, text="Функция 1:")
@@ -112,7 +138,13 @@ btn_change.grid(column=2, row=4)
 btn_del = Button(window, text="Удалить!", command=del_function)
 btn_del.grid(column=2, row=5)
 
-lbox = Listbox(width=15, height=8)
+lbox = Listbox(width=15, height=8, selectmode='multiple')
 lbox.grid(column=1, row=8)
+
+btn_obed = Button(window, text="Объеденить!", command=obed)
+btn_obed.grid(column=3, row=5)
+
+btn_peres = Button(window, text="Пересечь!", command=peres)
+btn_peres.grid(column=3, row=6)
 
 window.mainloop()
